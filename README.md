@@ -11,5 +11,5 @@ Los resultados se presentarán en un dashboard con tendencias territoriales, pre
 | ------------- | -------------- | -------------- |
 | Oscar Lara | os-devsec | Desarrollador |
 | Liseth Simbaña | chadowsv | Desarrolladora |
-| Anthony Pilamunga |  | Desarrollador |
+| Anthony Pilamunga | anthqny | Desarrollador |
 
