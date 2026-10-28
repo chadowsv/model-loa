@@ -138,3 +138,7 @@ Falta incorporar las exportaciones de clasificación, confirmar qué algoritmos 
 
 - [Datos abiertos de homicidios intencionales — Ecuador](https://www.datosabiertos.gob.ec/dataset/homicidios-intencionales)
 - Documentación interna sobre feriados: [`02_Datos_Big_Data/API_feriados.md`](02_Datos_Big_Data/API_feriados.md).
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3d55920de4eee84c7e69ef2b867d37297e30979e

@@ -38,11 +38,17 @@ La selección final dependerá de la disponibilidad, calidad y cobertura de los 
 
 ## 4. Enfoque de modelado
 
+<<<<<<< HEAD
 Se compararán **al menos tres modelos de aprendizaje automático**. Las implementaciones de regresión lineal y regresión logística del cuaderno principal constituyen **líneas base preliminares, no modelos finales**. Actualmente trabajan con registros agregados por cantón y día; la inclusión de franjas horarias requiere preparar datos adicionales.
 
 Como fase intermedia se prevé adaptar la información para evaluar **SVM** y dos enfoques que el equipo denomina provisionalmente **«landsmark»** y **«gauss gradiente»**, cuyos nombres técnicos y métodos deberán confirmarse antes de su implementación.
 
 Para el análisis más completo se proponen como candidatos **XGBoost, Transformers y LSTM**. Su adopción dependerá de la calidad de los datos, el volumen de información, la posibilidad de construir secuencias temporales y una comparación objetiva mediante validación temporal. Estos modelos **aún no están implementados**. Se contrastará tanto la predicción directa de categorías bajo / medio / alto como la estimación del conteo y su posterior categorización, cuando los umbrales estén justificados.
+=======
+Se propone utilizar 2 modelos, uno de clasificación supervisada que estime la categoría de frecuencia asociada a cada combinación de ubicación y tiempo. Entre los algoritmos candidatos se encuentran Random Forest, XGBoost y modelos de clasificación basados en árboles de decisión. 
+
+El otro un modelo de regresión o de conteo que estime primero el número esperado de homicidios y posteriormente transforme esa estimación en una categoría de frecuencia baja, media o alta. Este enfoque permitirá comparar si la predicción directa de categorías o la estimación numérica ofrece mejores resultados.
+>>>>>>> 3d55920de4eee84c7e69ef2b867d37297e30979e
 
 ## 5. Alcance y limitaciones
 
