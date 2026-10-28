@@ -1,0 +1,16 @@
+# Python / Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+
+# Datos originales y exportaciones locales pesadas
+02_Datos_Big_Data/Homicidios/*.xlsx
+02_Datos_Big_Data/Homicidios/*.xls
+02_Datos_Big_Data/Homicidios/*.csv
+
+# Artefactos del sistema
+.DS_Store
+Thumbs.db
