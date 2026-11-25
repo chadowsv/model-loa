@@ -1,17 +1,13 @@
-# Modelos de aprendizaje automático
+# Modelos de Machine Learning
 
-## Estado actual: modelos preliminares
+| Carpeta | Objetivo | Unidad | Corte de prueba |
+|---|---|---|---|
+| [00_Historicos](00_Historicos/) | Regresión lineal y logística binaria | Cantón–día | Desde 2025 en exportaciones históricas |
+| [Avance_II](Avance_II/) | Regresión logística, árbol y SVM lineal: baja/media/alta | Distrito–día–franja | Desde 18/02/2024 |
+| [AdaBoost](AdaBoost/) | Conteo y clasificación binaria | Distrito–día–franja | Desde 01/01/2025 |
+| [Random_Forest](Random_Forest/) | Clasificación baja/media/alta | Distrito–día–franja | Desde 18/02/2024 |
+| [LSTM](LSTM/) | Conteo y clasificación binaria | Distrito–día | Desde 01/01/2025 |
 
-El cuaderno principal de la raíz contiene **regresión lineal** para conteos y **regresión logística** para clasificación binaria. Son pruebas exploratorias y **no son los modelos finales del proyecto**. Los resultados de regresión están en `../05_Resultados/Regresion/`; las exportaciones de clasificación siguen pendientes de incorporar.
+AdaBoost, Random Forest y LSTM son los enfoques principales documentados, con resultados guardados. Los notebooks conservan sus celdas de código y salidas; no se han reentrenado. SVM, árbol y regresión logística constituyen experimentos de Avance II. XGBoost y Transformers fueron propuestas anteriores sin notebook implementado en el ZIP.
 
-## Próxima etapa: adaptación y experimentación
-
-Se prepararán los datos para ensayar **SVM** y para estudiar otras dos propuestas que el equipo identifica provisionalmente como **«landsmark»** y **«gauss gradiente»**. Es necesario confirmar los nombres técnicos exactos de estas últimas antes de definir su implementación.
-
-## Modelos de análisis avanzado previstos
-
-- **XGBoost**, para explorar relaciones no lineales entre variables tabulares.
-- **Transformers**, sujetos a diseñar representaciones temporales y comprobar la disponibilidad de datos y cómputo.
-- **LSTM**, sujetos a generar secuencias cronológicas y asegurar una evaluación sin fuga de datos.
-
-Estos modelos todavía **no han sido entrenados ni comparados en el repositorio**. Se justificarán con métricas y validación temporal, sin dar por hecho que su complejidad garantiza mejores resultados. El objetivo de clasificación en niveles **bajo / medio / alto** sigue pendiente de implementación.
+No elegir un ganador global: objetivos, unidades y pruebas no coinciden. Comparar contra líneas base y métricas por clase bajo protocolo común, sin usar el conjunto de prueba para calibrar umbrales. Random Forest explora umbrales sobre prueba, por lo que su evaluación es exploratoria. Ver [resultados](../05_Resultados/README.md).

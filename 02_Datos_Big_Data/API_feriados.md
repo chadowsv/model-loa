@@ -2,9 +2,9 @@
 
 ## 1. Descripción general
 
-La API de feriados permite consultar los días festivos de un país para un año específico. En este proyecto, se utilizará para identificar si la fecha de cada registro histórico corresponde a un feriado nacional.
+La API de feriados permite consultar los días festivos de un país para un año específico. En este proyecto, se utiliza para identificar si la fecha de cada registro histórico corresponde a un feriado nacional.
 
-Esta información servirá como una variable adicional para entrenar un modelo de aprendizaje automático que estime la categoría de la tasa de homicidios en un cantón, considerando variables temporales, geográficas y contextuales.
+Esta información servirá como una variable adicional para entrenar un modelo de aprendizaje automático que estime la categoría de frecuencia de homicidios por provincia, distrito, fecha y franja horaria, considerando variables temporales, geográficas y contextuales.
 
 ## 2. Información del servicio
 
@@ -24,7 +24,7 @@ Esta información servirá como una variable adicional para entrenar un modelo d
 
 El endpoint retorna la lista de feriados correspondientes al país y año especificados.
 
-Se consultará el calendario anual de feriados de Ecuador para identificar las fechas festivas que coincidan con los registros del conjunto de datos históricos.
+El notebook consulta el calendario anual de feriados de Ecuador para identificar las fechas festivas que coincidan con los registros del conjunto de datos históricos.
 
 ### 3.2. Parámetros de ruta
 
@@ -38,6 +38,7 @@ Se consultará el calendario anual de feriados de Ecuador para identificar las f
 ```http
 GET /v1/EC/holidays/2025
 Accept: application/json
+Authorization: Bearer <TOKEN_DE_COLAB>
 ```
 
 Esta solicitud obtiene los feriados de Ecuador correspondientes al año 2025.
@@ -97,7 +98,7 @@ Los campos opcionales deben tratarse de forma segura, ya que no necesariamente e
 
 La API no se utilizará para predecir directamente los homicidios. Su función será proporcionar información contextual que permita identificar los días festivos de cada año.
 
-La integración seguirá este proceso:
+La integración sigue este proceso general:
 
 1. Obtener las fechas de los registros históricos de homicidios.
 2. Identificar los años presentes en el conjunto de datos.
@@ -118,7 +119,7 @@ Interpretación:
 - `1`: la fecha coincide con un feriado.
 - `0`: la fecha no coincide con un feriado.
 
-Esta variable podrá utilizarse junto con otras características, como el cantón, la zona geográfica, el día de la semana, la hora y el mes.
+Esta variable podrá utilizarse junto con otras características, como el distrito, la provincia, el día de la semana, la hora y el mes.
 
 ## 6. Estrategia de consulta y almacenamiento
 
@@ -138,3 +139,6 @@ Esta estrategia reduce las solicitudes a la API y mejora la reproducibilidad de 
 - **Proveedor:** Feriados.io.
 - **Endpoint:** `GET /v1/{country}/holidays/{year}`.
 - **Documentación:** https://feriados.io/docs
+## 8. Estado comprobado en el repositorio
+
+El notebook [Calendario/Feriados.ipynb](Calendario/Feriados.ipynb) registra una consulta de 2014 a 2026 y la exportación de 173 registros. La credencial se lee mediante `userdata.get('API_Feriados')`. El [ETL](../03_Procesamiento/Procesamiento_DatasetModelo.ipynb) incorpora el calendario y registra 94.640 unidades marcadas como feriado. El CSV fuente no está en este ZIP. La estructura JSON ilustrativa anterior no sustituye la comprobación de la respuesta real. No se ha consultado nuevamente el proveedor.

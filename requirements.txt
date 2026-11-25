@@ -1,0 +1,10 @@
+# Dependencias orientativas (sin versiones fijadas). Google Colab aporta google.colab.
+pandas
+numpy
+openpyxl
+matplotlib
+seaborn
+scikit-learn
+requests
+joblib
+tensorflow

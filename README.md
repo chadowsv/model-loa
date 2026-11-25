@@ -1,144 +1,90 @@
-# Proyecto Integrador I — Análisis y predicción de homicidios intencionales en Ecuador
+# LOAModel | Análisis espacio-temporal de homicidios en Ecuador
 
-## Descripción
+Proyecto Integrador de Ingeniería en Sistemas de la Información, Universidad Internacional del Ecuador (UIDE). **Estado: prototipo académico en desarrollo**, documentación actualizada al 24/11/2026. Repositorio de código, experimentos y entregables; no es un sistema de alerta operativa ni un producto comercial desplegado.
 
-Este repositorio reúne el desarrollo de un proyecto de análisis de datos y aprendizaje automático sobre **homicidios intencionales en Ecuador**. Se exploran patrones históricos por **cantón y fecha**, se construye un conjunto de datos agregado y se evalúan modelos preliminares para estimar el número de víctimas y la presencia o ausencia de víctimas en una unidad cantón-día.
+## Objetivo y alcance
 
-**Alcance actualizado:** no se utilizarán datos de emergencias del ECU 911. La fuente principal para el análisis de homicidios son los registros publicados por el **Ministerio del Interior**. Se contempla integrar datos de feriados mediante una API como variable contextual; dicha integración **todavía no está implementada** en los modelos disponibles.
+Analizar patrones históricos de víctimas de homicidios intencionales mediante datos oficiales y variables de calendario, evaluar modelos de aprendizaje automático y comunicar resultados agregados mediante un dashboard preliminar de Power BI. La unidad del pipeline vigente es **provincia–distrito–fecha–franja horaria**. El Avance I utiliza cantón–día; LSTM agrega a distrito–día. No son unidades equivalentes. El proyecto no identifica personas ni determina incidentes individuales ni tasas de riesgo poblacional.
 
-## Objetivos
+El histórico abarca 2014–2025 y un archivo independiente de enero–agosto de 2026. **ECU 911 fue descartado** según la Fase 2 de Ciberseguridad, p. 3; las menciones antiguas corresponden al alcance inicial. La API de feriados sí fue consultada e integrada. El dashboard es un **bosquejo**, no su versión final.
 
-- Analizar y depurar datos históricos de homicidios intencionales por ubicación y fecha.
-- Construir un panel temporal agregado por **cantón-día** para exploración y modelado.
-- Evaluar modelos de regresión y clasificación como **líneas base exploratorias**, sin considerarlos los modelos finales del proyecto.
-- Comparar distintas estrategias de procesamiento y **al menos tres modelos de Machine Learning** durante las siguientes etapas del proyecto.
-- Adaptar el conjunto de datos a nuevos enfoques y desarrollar modelos más completos para el análisis espacio-temporal, con evaluación y selección basadas en evidencia.
-- Evaluar el aporte del calendario de feriados y diseñar visualizaciones para comunicar hallazgos.
-- Documentar calidad, supuestos, métricas, limitaciones y reproducibilidad.
+## Estructura y navegación
 
-## Datos y periodo
+| Carpeta | Contenido |
+|---|---|
+| [01_Gestion_del_Proyecto](01_Gestion_del_Proyecto/) | Objetivo, alcance, sprint y criterios de aceptación |
+| [02_Datos_Big_Data](02_Datos_Big_Data/) | Fuentes oficiales, API, notebook de calendario y rutas de Drive |
+| [03_Procesamiento](03_Procesamiento/) | ETL vigente, EDA y preparación histórica |
+| [04_Modelos_ML](04_Modelos_ML/) | AdaBoost, Random Forest, LSTM, Avance II y antecedentes |
+| [05_Resultados](05_Resultados/) | Exportaciones históricas y guía de resultados actuales |
+| [06_Dashboard](06_Dashboard/) | Informe de Semana 7 y bosquejo del dashboard |
+| [07_Documentacion](07_Documentacion/) | Tendencias, modelo de negocio, reproducibilidad y ciberseguridad |
 
-| Fuente | Uso | Estado |
-| --- | --- | --- |
-| Ministerio del Interior, homicidios 2014–2025 | Datos históricos | Utilizados en el cuaderno principal |
-| Ministerio del Interior, homicidios 2026 | Continuación temporal | El cuaderno actual llega a **agosto de 2026** |
-| API de feriados de Ecuador | Variable contextual (`es_feriado`) | Documentada; integración pendiente |
+## Flujo tecnológico
 
-**Importante:** si se dispone del corte **enero–septiembre de 2026**, habrá que adaptar la búsqueda del archivo en el cuaderno, volver a ejecutar el pipeline y **regenerar las tablas y métricas**. Los archivos de resultados incluidos aquí corresponden a **2014-01-01 a 2026-08-31**; no representan una ejecución con datos de septiembre.
-
-El panel del modelo contiene **994.590 filas** (una por cantón-día) para **215 cantones**, bajo el supuesto —aún sujeto a validación— de que una combinación sin registros equivale a cero víctimas. Se debe revisar la cobertura de la fuente antes de interpretar los ceros como hechos confirmados.
-
-## Modelos y estado actual
-
-> **Importante: los modelos incluidos actualmente NO son los modelos finales.** La regresión lineal y la regresión logística son pruebas iniciales que permiten verificar la preparación del conjunto de datos, definir líneas base y detectar limitaciones. El objetivo es avanzar hacia modelos más completos para el análisis de homicidios intencionales. **No se afirma que los modelos planeados estén entrenados, evaluados o seleccionados.**
-
-### Fase 1 — Modelos preliminares (estado real del repositorio)
-
-| Enfoque | Variable objetivo | Algoritmo | Estado |
-| --- | --- | --- | --- |
-| Regresión | `victimas_homicidio`: conteo en cantón-día | Regresión lineal | Implementado; resultados disponibles |
-| Clasificación binaria | `hubo_victimas`: 0 o 1 en cantón-día | Regresión logística | Implementado en el cuaderno; faltan los CSV exportados |
-| Clasificación en niveles | Frecuencia baja, media o alta, con umbrales por justificar | Aún no seleccionado | Objetivo del proyecto; pendiente |
-
-### Fase 2 — Adaptación del conjunto de datos y experimentación (próximos pasos)
-
-Antes de entrenar modelos más complejos se buscará **adaptar las variables, la agregación espacial y temporal y los formatos de entrada** para evaluar:
-
-- **SVM (Support Vector Machine):** alternativa de clasificación a contrastar con las líneas base.
-- **«landsmark»:** nombre de trabajo indicado por el equipo; **pendiente de confirmar la técnica o algoritmo exacto** antes de implementarlo.
-- **«gauss gradiente»:** nombre de trabajo indicado por el equipo; **pendiente de precisar a qué algoritmo se refiere** antes de implementarlo.
-
-Los enfoques de esta fase **aún no figuran como entrenados ni validados**. Se evaluará su pertinencia según las características disponibles y la definición final de la variable objetivo.
-
-### Fase 3 — Modelos previstos para un análisis más completo
-
-Los modelos que el equipo propone explorar como candidatos principales son:
-
-1. **XGBoost:** modelos basados en árboles potenciados para analizar variables geográficas, temporales, históricas y contextuales.
-2. **Transformers:** arquitecturas de atención que requerirán definir una representación temporal adecuada y comprobar su viabilidad con los datos disponibles.
-3. **LSTM (Long Short-Term Memory):** redes recurrentes para estudiar dependencias temporales, previa construcción y validación de secuencias históricas.
-
-La elección del modelo o conjunto de modelos finales dependerá de la calidad de los datos, la granularidad temporal, el coste computacional y la comparación rigurosa mediante **validación temporal** y métricas apropiadas. Proponer estas tres arquitecturas **no equivale a afirmar que todas serán necesariamente las soluciones finales**.
-
-**Distinción del objetivo:** la clasificación binaria actual (sin víctimas / con víctimas) no es lo mismo que la clasificación baja / media / alta propuesta en `01_Gestion_del_Proyecto/dato_objetivo.md`. El notebook disponible trabaja a nivel de **cantón-día**, no de franja horaria; para esta última hará falta adaptar los datos y verificar la disponibilidad de horas válidas.
-
-### Métricas preliminares de regresión
-
-Métricas del archivo `05_Resultados/Regresion/metricas_regresion.csv`, evaluado sobre registros de **2025-01-01 a 2026-08-31**:
-
-| Modelo | MSE | MAE | R² |
-| --- | ---: | ---: | ---: |
-| Promedio histórico (referencia) | 0.339637 | **0.118178** | 0.249051 |
-| Regresión lineal | **0.333986** | 0.164796 | **0.261544** |
-
-La regresión lineal mejora ligeramente MSE y R², pero **empeora el MAE global** respecto de la referencia; por ello, los resultados no demuestran aún capacidad predictiva suficiente para un uso operativo. Véanse las métricas desglosadas por días con y sin víctimas y las limitaciones documentadas en el cuaderno.
-
-## Estructura del repositorio
-
-```text
-model-loa/
-├── 01_Gestion_del_Proyecto/
-│   └── dato_objetivo.md
-├── 02_Datos_Big_Data/
-│   ├── API_feriados.md
-│   ├── Homicidios/               # archivos fuente: mantener en Drive, salvo decisión del equipo
-│   └── Calendario/               # integración futura de feriados
-├── 03_Procesamiento/             # limpieza, EDA y comparación de motores
-├── 04_Modelos_ML/                # líneas base, adaptación y candidatos futuros
-├── 05_Resultados/
-│   ├── Regresion/                # 4 archivos incorporados del ZIP de Drive
-│   └── Clasificacion/            # exportaciones pendientes de subir
-├── 06_Dashboard/                 # tablero pendiente
-├── 07_Documentacion/             # fuentes, decisiones, validación y entregables
-├── Proyecto_Integrador_I_LaraSimbañaPilamunga.ipynb
-├── .gitignore
-└── README.md
+```mermaid
+flowchart LR
+    A[Datos abiertos: homicidios] --> D[Google Drive: insumos]
+    B[API feriados.io] --> D
+    D --> E[Google Colab: ETL pandas]
+    E --> F[Dataset agregado en Drive]
+    F --> G[Experimentos ML]
+    G --> H[Resultados y evaluación]
+    F --> I[Power BI: bosquejo]
+    H -. integración pendiente .-> I
+    J[GitHub: código y documentación] --- E
+    J --- G
 ```
 
-Las carpetas vacías tienen un archivo `README.md` de orientación. El cuaderno principal permanece en la raíz para evitar cambiar de forma imprevista su configuración de rutas; podrá modularizarse en `03_Procesamiento/` y `04_Modelos_ML/` en otro avance.
+Jira y WhatsApp se utilizan para organización y comunicación, según la Fase 2. Secrets de Colab custodia la credencial de feriados. No hay evidencia de despliegue en AWS/Azure, ni de un `.pbix` publicado en este ZIP.
 
-## Archivos importados desde Drive
+## Estado de avances verificados
 
-Los archivos de la carpeta `Regresion` se han añadido a `05_Resultados/Regresion/`:
+| Componente | Evidencia guardada | Estado |
+|---|---|---|
+| API de feriados | 173 registros para 2014–2026, salida de notebook | Ejecutada; CSV fuente en Drive |
+| ETL | 45.497 registros combinados; 45.492 válidos para agregación (5 sin hora válida); 2.590.560 unidades y 12 columnas exportadas | Ejecutado según salidas guardadas |
+| Big Data | pandas implementado; Polars y PySpark considerados | Comparativa de motores pendiente |
+| Avance I | Regresión lineal y logística, granularidad cantón–día | Histórico; no solución definitiva |
+| Avance II | Regresión logística, árbol de decisión y SVM lineal | Comparación de tres clases ejecutada |
+| AdaBoost | Regresión y clasificación binaria por franja | Experimento ejecutado |
+| Random Forest | Clasificación baja/media/alta por franja | Experimento ejecutado; umbral explorado sobre test |
+| LSTM | Regresión y clasificación binaria diarias, ventanas de 28 días | Experimento ejecutado |
+| Dashboard | Informe de Semana 7 | Bosquejo; implementación/validación pendientes |
+| Seguridad | Fases 2 y 3, controles CTL-01 a CTL-06 | Estado según informes; validación de Fase 4 pendiente |
 
-- `metricas_regresion.csv`: comparación de las métricas MSE, MAE y R².
-- `metricas_por_grupo.csv`: errores separados entre días-cantón con y sin víctimas.
-- `predicciones_regresion.csv.gz`: **130.720 predicciones** del periodo de prueba.
-- `tabla_modelo_regresion.csv.gz`: tabla base agregada con **994.590 filas**.
+Las cifras son de salidas existentes, no de una nueva ejecución. **AdaBoost, Random Forest y LSTM son los enfoques principales documentados; no hay ganador comparable ni selección operativa certificada.** Ver [modelos](04_Modelos_ML/README.md) y [resultados](05_Resultados/README.md).
 
-Los `.csv.gz` son CSV comprimidos; pueden leerse con `pandas.read_csv(ruta, compression="gzip", dtype={"codigo_canton": str})` para **conservar los ceros iniciales** del código cantonal.
+## Reproducción
 
-## Procesamiento, API y avances pendientes
+1. Abrir los notebooks en Colab y montar la cuenta autorizada de Drive. No se requiere mover los archivos de Drive por la reorganización del GitHub.
+2. Colocar los Excel originales en `ModelLOA/Datos_Iniciales/` con sus nombres originales (ver [fuentes](02_Datos_Big_Data/Homicidios/README.md)).
+3. Configurar el Secret `API_Feriados` en Colab solo para el [notebook de feriados](02_Datos_Big_Data/Calendario/Feriados.ipynb). Su código guarda actualmente el CSV en `00_Proyecto_Sexto/Datos_Iniciales/`; copiar el resultado a `ModelLOA/Datos_Iniciales/` antes del ETL, o ajustar la ruta manualmente según el Drive del equipo.
+4. Ejecutar [Procesamiento_DatasetModelo](03_Procesamiento/Procesamiento_DatasetModelo.ipynb); verificar las salidas y que exista `ModelLOA/Datos_Procesados/dataset_homicidios_final.csv`.
+5. Ejecutar los notebooks de [modelos](04_Modelos_ML/) según el objetivo. Consultar sus cortes y métricas antes de comparar. Los artefactos exportados por AdaBoost y LSTM están previstos en Drive; no se incluyeron como archivos independientes en el ZIP.
+6. Para el dashboard, consumir únicamente tablas revisadas y agregadas. La conexión definitiva, las métricas de usabilidad y las pruebas con usuarios siguen pendientes.
 
-El notebook implementa limpieza, agregación, codificación y separación temporal. Para completar las exigencias de procesamiento se propone **documentar y contrastar tres alternativas**, por ejemplo **Pandas, Polars y PySpark**, comprobando equivalencia de resultados, tiempos y recursos. Actualmente no se presentan como tres implementaciones terminadas.
+Dependencias principales: Python, pandas, numpy, openpyxl, matplotlib, seaborn, scikit-learn, requests, joblib y TensorFlow para LSTM. [requirements.txt](requirements.txt) es una lista orientativa sin versiones fijadas; registrar las versiones efectivamente utilizadas para una reproducción exacta. Los Excel y el CSV final no se distribuyen aquí; no se ha comprobado la ejecución completa en este entorno.
 
-La integración de la API de feriados se explica en `02_Datos_Big_Data/API_feriados.md`, pero debe **verificarse el servicio y ejecutar su integración**, conservando la procedencia y el corte de consulta. El calendario serviría como característica exógena conocida de antemano, no como prueba de causalidad.
+## Limitaciones y uso responsable
 
-Falta incorporar las exportaciones de clasificación, confirmar qué algoritmos designan los nombres de trabajo «landsmark» y «gauss gradiente», adaptar y evaluar SVM y otros candidatos, comparar **al menos tres modelos**, definir y validar el objetivo de tres niveles si se adopta, y desarrollar el dashboard. XGBoost, Transformers y LSTM son **modelos previstos**, no implementaciones ya concluidas. Se recomienda comparar con validación temporal, sin reutilizar la prueba final para ajustar hiperparámetros ni generar características con información futura.
+El dataset vigente tiene 98,61 % de ceros, completados bajo el supuesto de ausencia de registros en combinaciones no observadas. Las clases minoritarias requieren métricas por clase. No comparar directamente resultados de distintas unidades, fechas, objetivos ni protocolos. Separar ajuste, validación y prueba; fijar categorías con datos de entrenamiento y revisar disponibilidad temporal. Las predicciones son experimentales, no una justificación automática de asignación de recursos ni afirmaciones causales.
 
-## Cómo reproducir el avance actual
+## Documentación y seguridad
 
-1. Abrir `Proyecto_Integrador_I_LaraSimbañaPilamunga.ipynb` en Jupyter o Google Colab.
-2. Instalar las dependencias utilizadas por el cuaderno: `pandas`, `numpy`, `matplotlib`, `scikit-learn` y `openpyxl`.
-3. Colocar los dos archivos Excel originales requeridos por el cuaderno (histórico 2014–2025 y **2026 enero–agosto**), respetando los nombres y rutas buscados en la celda de carga. Los Excel originales **no están incluidos en este ZIP**.
-4. Ejecutar las celdas en orden y revisar los supuestos y métricas.
-5. Si se cambia la fuente, el periodo, las variables o el código, volver a exportar los resultados antes de actualizar las cifras del README.
-
-> Los datos disponibles en este repositorio permiten **revisar resultados exportados**; para reproducir el entrenamiento completo se necesitan los Excel originales. Los modelos son exploratorios y no estiman riesgo individual ni permiten afirmar que ocurrirá un homicidio en un lugar o fecha específicos.
+- [Semana 7: dashboard y valor](06_Dashboard/README.md) (10–16/11/2026).
+- [Product Owner: tendencias y modelo de negocio](07_Documentacion/Tendencias_y_Modelo_de_Negocio/README.md).
+- [Ciberseguridad: Fases 2 y 3](07_Documentacion/Ciberseguridad/README.md). Las copias públicas reservan correos, firmas y evidencias personales; los originales deben permanecer en Drive restringido.
+- [Limitaciones y reproducibilidad](07_Documentacion/Reproducibilidad/README.md).
+- [Seguridad y publicación](SECURITY.md) y [registro de reorganización](CHANGELOG.md).
+- [Cómo aplicar la actualización en GitHub](ACTUALIZAR_GITHUB.md).
 
 ## Integrantes
 
-| Nombre | Usuario GitHub | Rol |
-| --- | --- | --- |
-| Oscar Lara | os-devsec | Desarrollador |
-| Liseth Simbaña | chadowsv | Desarrolladora |
-| Anthony Pilamunga | anthqny | Desarrollador |
+| Integrante | GitHub |
+|---|---|
+| Oscar Lara | os-devsec |
+| Liseth Simbaña | chadowsv |
+| Anthony Pilamunga | anthqny |
 
-## Referencias de trabajo
-
-- [Datos abiertos de homicidios intencionales — Ecuador](https://www.datosabiertos.gob.ec/dataset/homicidios-intencionales)
-- Documentación interna sobre feriados: [`02_Datos_Big_Data/API_feriados.md`](02_Datos_Big_Data/API_feriados.md).
-<<<<<<< HEAD
-=======
-
->>>>>>> 3d55920de4eee84c7e69ef2b867d37297e30979e
+Fuente de datos: [Portal de datos abiertos de Ecuador](https://www.datosabiertos.gob.ec/dataset/homicidios-intencionales). API: [documentación interna](02_Datos_Big_Data/API_feriados.md). Consultar condiciones de uso de las fuentes antes de redistribuir datos. No se ha añadido una licencia al proyecto sin acuerdo del equipo.

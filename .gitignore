@@ -1,0 +1,32 @@
+# Secretos y configuración local
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+secrets.json
+# Entornos y caché
+.venv/
+venv/
+__pycache__/
+.ipynb_checkpoints/
+.pytest_cache/
+.DS_Store
+Thumbs.db
+# Datos y resultados locales no revisados
+Datos_Iniciales/
+Datos_Procesados/
+01_originales/
+02_procesados/
+04_resultados/
+Documentos_Privados/
+*_Original_Privado.pdf
+*.keras
+*.h5
+*.joblib
+*.pkl
+*.pt
+*.pbix
+# Archivos temporales de Office
+~$*
